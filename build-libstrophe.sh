@@ -142,8 +142,6 @@ mkdir -p ${CURRENTPATH}/include
 cp ${CURRENTPATH}/bin/iPhoneSimulator${SDKVERSION}.sdk/strophe.h ${CURRENTPATH}/include/
 echo "Building done."
 
-exit;
-
 echo "Cleaning up..."
 rm -rf ${CURRENTPATH}/src
 rm -rf ${CURRENTPATH}/bin
