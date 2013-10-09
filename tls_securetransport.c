@@ -183,6 +183,18 @@ int tls_stop(tls_t *tls)
 	return 0;
 }
 
+int tls_is_recoverable(int error)
+{
+	switch (error) {
+		case errSSLWouldBlock:
+			return true;
+		default:
+			break;
+	}
+
+	return false;
+}
+
 int tls_error(tls_t *tls)
 {
     /* todo: some kind of error polling/dump */
@@ -216,5 +228,10 @@ int tls_write(tls_t *tls, const void * const buff, const size_t len)
 	SSLWrite(tls->sslctx, buff, len, &processed);
 
 	return processed;
+}
+
+int tls_clear_pending_write(tls_t *tls)
+{
+    return 0;
 }
 
