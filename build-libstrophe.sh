@@ -47,7 +47,7 @@ PLATFORM="iPhoneSimulator"
 echo "Building ${PACKAGE} for ${PLATFORM} ${SDKVERSION} ${ARCH}"
 echo "Please stand by..."
 
-export CC="${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/usr/bin/gcc -arch ${ARCH}"
+#export CC="${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/usr/bin/gcc -arch ${ARCH}"
 mkdir -p "${CURRENTPATH}/bin/${PLATFORM}${SDKVERSION}.sdk"
 
 echo "Configure ${PACKAGE} for ${PLATFORM} ${SDKVERSION} ${ARCH}"
@@ -55,13 +55,15 @@ echo "Configure ${PACKAGE} for ${PLATFORM} ${SDKVERSION} ${ARCH}"
 ./configure BSD-generic32
 
 # add -isysroot to CC=
-sed -ie "s!^CFLAG=!CFLAG=-isysroot ${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDKVERSION}.sdk !" "Makefile"
-sed -ie "s!^CFLAG=!CFLAG=-miphoneos-version-min=${SDKVERSION} !" "Makefile"
-sed -ie "s!^CFLAG=!CFLAG=-mstackrealign !" "Makefile"
+#sed -ie "s!^CFLAG=!CFLAG=-isysroot ${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDKVERSION}.sdk !" "Makefile"
+#sed -ie "s!^CFLAG=!CFLAG=-miphoneos-version-min=${SDKVERSION} !" "Makefile"
+#sed -ie "s!^CFLAG=!CFLAG=-mstackrealign !" "Makefile"
+
+CC="${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/usr/bin/gcc -arch ${ARCH} -isysroot ${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDKVERSION}.sdk -pipe -Os -gdwarf-2 -miphoneos-version-min=${SDKVERSION}" ./configure --host=${ARCH}-apple-darwin
 
 echo "Make ${PACKAGE} for ${PLATFORM} ${SDKVERSION} ${ARCH}"
 
-make -j libstrophe.a
+make libstrophe.a
 #make install
 cp "${CURRENTPATH}/libstrophe/libstrophe.a" "${CURRENTPATH}/bin/${PLATFORM}${SDKVERSION}.sdk/"
 cp "${CURRENTPATH}/libstrophe/strophe.h" "${CURRENTPATH}/bin/${PLATFORM}${SDKVERSION}.sdk/"
@@ -83,7 +85,7 @@ mkdir -p "${CURRENTPATH}/bin/${PLATFORM}${SDKVERSION}-${ARCH}.sdk"
 
 echo "Configure ${PACKAGE} for ${PLATFORM} ${SDKVERSION} ${ARCH}"
 
-CC="${DEVELOPER}/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch ${ARCH} -isysroot ${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDKVERSION}.sdk -arch ${ARCH} -pipe -Os -gdwarf-2 -miphoneos-version-min=${SDKVERSION}" ./configure --host=${ARCH}-apple-darwin
+CC="${DEVELOPER}/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch ${ARCH} -isysroot ${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDKVERSION}.sdk -pipe -Os -gdwarf-2 -miphoneos-version-min=${SDKVERSION}" ./configure --host=${ARCH}-apple-darwin
 
 #sed -ie "s!^CFLAG=!CFLAG=-isysroot ${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDKVERSION}.sdk !" "Makefile"
 #sed -ie "s!^CFLAG=!CFLAG=-miphoneos-version-min=${SDKVERSION} !" "Makefile"
@@ -113,7 +115,7 @@ mkdir -p "${CURRENTPATH}/bin/${PLATFORM}${SDKVERSION}-${ARCH}.sdk"
 
 echo "Configure ${PACKAGE} for ${PLATFORM} ${SDKVERSION} ${ARCH}"
 
-CC="${DEVELOPER}/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch ${ARCH} -isysroot ${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDKVERSION}.sdk -arch ${ARCH} -pipe -Os -gdwarf-2 -miphoneos-version-min=${SDKVERSION}" ./configure --host=${ARCH}-apple-darwin
+CC="${DEVELOPER}/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch ${ARCH} -isysroot ${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDKVERSION}.sdk -pipe -Os -gdwarf-2 -miphoneos-version-min=${SDKVERSION}" ./configure --host=${ARCH}-apple-darwin
 
 #sed -ie "s!^CFLAG=!CFLAG=-isysroot ${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDKVERSION}.sdk !" "Makefile"
 #sed -ie "s!^CFLAG=!CFLAG=-miphoneos-version-min=${SDKVERSION} !" "Makefile"
